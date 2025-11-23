@@ -6,6 +6,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { sessionQueries } from "@/features/session/data/queries";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 
@@ -32,6 +33,15 @@ export const Route = createRootRouteWithContext<{
       },
     ],
   }),
+  beforeLoad: async ({ context }) => {
+    const session = await context.queryClient.ensureQueryData(
+      sessionQueries.get(),
+    );
+
+    return {
+      session,
+    };
+  },
   shellComponent: RootDocument,
 });
 
