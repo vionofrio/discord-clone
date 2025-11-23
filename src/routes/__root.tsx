@@ -6,6 +6,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { verifySessionQuery } from "@/data/auth/queries";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 
@@ -32,6 +33,17 @@ export const Route = createRootRouteWithContext<{
       },
     ],
   }),
+  beforeLoad: async ({ context }) => {
+    const { session, isAuthenticated } =
+      await context.queryClient.ensureQueryData(verifySessionQuery());
+
+    return {
+      session: {
+        ...session,
+        isAuthenticated,
+      },
+    };
+  },
   shellComponent: RootDocument,
 });
 
