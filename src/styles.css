@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@fontsource-variable/public-sans";
+
+@theme inline {
+  --font-sans: "Public Sans Variable", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
