@@ -16,7 +16,12 @@ import { Route as AuthedMainRouteRouteImport } from './routes/_authed/_main/rout
 import { Route as AuthRegisterIndexRouteImport } from './routes/_auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/_auth/login/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthedMainChannelsAtmeRouteRouteImport } from './routes/_authed/_main/channels/@me/route'
+import { Route as AuthedMainChannelsServerIdRouteRouteImport } from './routes/_authed/_main/channels/$serverId/route'
 import { Route as AuthedMainChannelsAtmeIndexRouteImport } from './routes/_authed/_main/channels/@me/index'
+import { Route as AuthedMainChannelsServerIdIndexRouteImport } from './routes/_authed/_main/channels/$serverId/index'
+import { Route as AuthedMainChannelsAtmeDmIdIndexRouteImport } from './routes/_authed/_main/channels/@me/$dmId/index'
+import { Route as AuthedMainChannelsServerIdChannelIdIndexRouteImport } from './routes/_authed/_main/channels/$serverId/$channelId/index'
 
 const AuthedRouteRoute = AuthedRouteRouteImport.update({
   id: '/_authed',
@@ -50,11 +55,41 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedMainChannelsAtmeRouteRoute =
+  AuthedMainChannelsAtmeRouteRouteImport.update({
+    id: '/channels/@me',
+    path: '/channels/@me',
+    getParentRoute: () => AuthedMainRouteRoute,
+  } as any)
+const AuthedMainChannelsServerIdRouteRoute =
+  AuthedMainChannelsServerIdRouteRouteImport.update({
+    id: '/channels/$serverId',
+    path: '/channels/$serverId',
+    getParentRoute: () => AuthedMainRouteRoute,
+  } as any)
 const AuthedMainChannelsAtmeIndexRoute =
   AuthedMainChannelsAtmeIndexRouteImport.update({
-    id: '/channels/@me/',
-    path: '/channels/@me/',
-    getParentRoute: () => AuthedMainRouteRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthedMainChannelsAtmeRouteRoute,
+  } as any)
+const AuthedMainChannelsServerIdIndexRoute =
+  AuthedMainChannelsServerIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthedMainChannelsServerIdRouteRoute,
+  } as any)
+const AuthedMainChannelsAtmeDmIdIndexRoute =
+  AuthedMainChannelsAtmeDmIdIndexRouteImport.update({
+    id: '/$dmId/',
+    path: '/$dmId/',
+    getParentRoute: () => AuthedMainChannelsAtmeRouteRoute,
+  } as any)
+const AuthedMainChannelsServerIdChannelIdIndexRoute =
+  AuthedMainChannelsServerIdChannelIdIndexRouteImport.update({
+    id: '/$channelId/',
+    path: '/$channelId/',
+    getParentRoute: () => AuthedMainChannelsServerIdRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -62,14 +97,22 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/login': typeof AuthLoginIndexRoute
   '/register': typeof AuthRegisterIndexRoute
-  '/channels/@me': typeof AuthedMainChannelsAtmeIndexRoute
+  '/channels/$serverId': typeof AuthedMainChannelsServerIdRouteRouteWithChildren
+  '/channels/@me': typeof AuthedMainChannelsAtmeRouteRouteWithChildren
+  '/channels/$serverId/': typeof AuthedMainChannelsServerIdIndexRoute
+  '/channels/@me/': typeof AuthedMainChannelsAtmeIndexRoute
+  '/channels/$serverId/$channelId': typeof AuthedMainChannelsServerIdChannelIdIndexRoute
+  '/channels/@me/$dmId': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/login': typeof AuthLoginIndexRoute
   '/register': typeof AuthRegisterIndexRoute
+  '/channels/$serverId': typeof AuthedMainChannelsServerIdIndexRoute
   '/channels/@me': typeof AuthedMainChannelsAtmeIndexRoute
+  '/channels/$serverId/$channelId': typeof AuthedMainChannelsServerIdChannelIdIndexRoute
+  '/channels/@me/$dmId': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,13 +123,36 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_auth/login/': typeof AuthLoginIndexRoute
   '/_auth/register/': typeof AuthRegisterIndexRoute
+  '/_authed/_main/channels/$serverId': typeof AuthedMainChannelsServerIdRouteRouteWithChildren
+  '/_authed/_main/channels/@me': typeof AuthedMainChannelsAtmeRouteRouteWithChildren
+  '/_authed/_main/channels/$serverId/': typeof AuthedMainChannelsServerIdIndexRoute
   '/_authed/_main/channels/@me/': typeof AuthedMainChannelsAtmeIndexRoute
+  '/_authed/_main/channels/$serverId/$channelId/': typeof AuthedMainChannelsServerIdChannelIdIndexRoute
+  '/_authed/_main/channels/@me/$dmId/': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/auth/$' | '/login' | '/register' | '/channels/@me'
+  fullPaths:
+    | '/'
+    | '/api/auth/$'
+    | '/login'
+    | '/register'
+    | '/channels/$serverId'
+    | '/channels/@me'
+    | '/channels/$serverId/'
+    | '/channels/@me/'
+    | '/channels/$serverId/$channelId'
+    | '/channels/@me/$dmId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$' | '/login' | '/register' | '/channels/@me'
+  to:
+    | '/'
+    | '/api/auth/$'
+    | '/login'
+    | '/register'
+    | '/channels/$serverId'
+    | '/channels/@me'
+    | '/channels/$serverId/$channelId'
+    | '/channels/@me/$dmId'
   id:
     | '__root__'
     | '/'
@@ -96,7 +162,12 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/_auth/login/'
     | '/_auth/register/'
+    | '/_authed/_main/channels/$serverId'
+    | '/_authed/_main/channels/@me'
+    | '/_authed/_main/channels/$serverId/'
     | '/_authed/_main/channels/@me/'
+    | '/_authed/_main/channels/$serverId/$channelId/'
+    | '/_authed/_main/channels/@me/$dmId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -157,12 +228,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authed/_main/channels/@me/': {
-      id: '/_authed/_main/channels/@me/'
+    '/_authed/_main/channels/@me': {
+      id: '/_authed/_main/channels/@me'
       path: '/channels/@me'
       fullPath: '/channels/@me'
-      preLoaderRoute: typeof AuthedMainChannelsAtmeIndexRouteImport
+      preLoaderRoute: typeof AuthedMainChannelsAtmeRouteRouteImport
       parentRoute: typeof AuthedMainRouteRoute
+    }
+    '/_authed/_main/channels/$serverId': {
+      id: '/_authed/_main/channels/$serverId'
+      path: '/channels/$serverId'
+      fullPath: '/channels/$serverId'
+      preLoaderRoute: typeof AuthedMainChannelsServerIdRouteRouteImport
+      parentRoute: typeof AuthedMainRouteRoute
+    }
+    '/_authed/_main/channels/@me/': {
+      id: '/_authed/_main/channels/@me/'
+      path: '/'
+      fullPath: '/channels/@me/'
+      preLoaderRoute: typeof AuthedMainChannelsAtmeIndexRouteImport
+      parentRoute: typeof AuthedMainChannelsAtmeRouteRoute
+    }
+    '/_authed/_main/channels/$serverId/': {
+      id: '/_authed/_main/channels/$serverId/'
+      path: '/'
+      fullPath: '/channels/$serverId/'
+      preLoaderRoute: typeof AuthedMainChannelsServerIdIndexRouteImport
+      parentRoute: typeof AuthedMainChannelsServerIdRouteRoute
+    }
+    '/_authed/_main/channels/@me/$dmId/': {
+      id: '/_authed/_main/channels/@me/$dmId/'
+      path: '/$dmId'
+      fullPath: '/channels/@me/$dmId'
+      preLoaderRoute: typeof AuthedMainChannelsAtmeDmIdIndexRouteImport
+      parentRoute: typeof AuthedMainChannelsAtmeRouteRoute
+    }
+    '/_authed/_main/channels/$serverId/$channelId/': {
+      id: '/_authed/_main/channels/$serverId/$channelId/'
+      path: '/$channelId'
+      fullPath: '/channels/$serverId/$channelId'
+      preLoaderRoute: typeof AuthedMainChannelsServerIdChannelIdIndexRouteImport
+      parentRoute: typeof AuthedMainChannelsServerIdRouteRoute
     }
   }
 }
@@ -181,12 +287,49 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface AuthedMainRouteRouteChildren {
+interface AuthedMainChannelsServerIdRouteRouteChildren {
+  AuthedMainChannelsServerIdIndexRoute: typeof AuthedMainChannelsServerIdIndexRoute
+  AuthedMainChannelsServerIdChannelIdIndexRoute: typeof AuthedMainChannelsServerIdChannelIdIndexRoute
+}
+
+const AuthedMainChannelsServerIdRouteRouteChildren: AuthedMainChannelsServerIdRouteRouteChildren =
+  {
+    AuthedMainChannelsServerIdIndexRoute: AuthedMainChannelsServerIdIndexRoute,
+    AuthedMainChannelsServerIdChannelIdIndexRoute:
+      AuthedMainChannelsServerIdChannelIdIndexRoute,
+  }
+
+const AuthedMainChannelsServerIdRouteRouteWithChildren =
+  AuthedMainChannelsServerIdRouteRoute._addFileChildren(
+    AuthedMainChannelsServerIdRouteRouteChildren,
+  )
+
+interface AuthedMainChannelsAtmeRouteRouteChildren {
   AuthedMainChannelsAtmeIndexRoute: typeof AuthedMainChannelsAtmeIndexRoute
+  AuthedMainChannelsAtmeDmIdIndexRoute: typeof AuthedMainChannelsAtmeDmIdIndexRoute
+}
+
+const AuthedMainChannelsAtmeRouteRouteChildren: AuthedMainChannelsAtmeRouteRouteChildren =
+  {
+    AuthedMainChannelsAtmeIndexRoute: AuthedMainChannelsAtmeIndexRoute,
+    AuthedMainChannelsAtmeDmIdIndexRoute: AuthedMainChannelsAtmeDmIdIndexRoute,
+  }
+
+const AuthedMainChannelsAtmeRouteRouteWithChildren =
+  AuthedMainChannelsAtmeRouteRoute._addFileChildren(
+    AuthedMainChannelsAtmeRouteRouteChildren,
+  )
+
+interface AuthedMainRouteRouteChildren {
+  AuthedMainChannelsServerIdRouteRoute: typeof AuthedMainChannelsServerIdRouteRouteWithChildren
+  AuthedMainChannelsAtmeRouteRoute: typeof AuthedMainChannelsAtmeRouteRouteWithChildren
 }
 
 const AuthedMainRouteRouteChildren: AuthedMainRouteRouteChildren = {
-  AuthedMainChannelsAtmeIndexRoute: AuthedMainChannelsAtmeIndexRoute,
+  AuthedMainChannelsServerIdRouteRoute:
+    AuthedMainChannelsServerIdRouteRouteWithChildren,
+  AuthedMainChannelsAtmeRouteRoute:
+    AuthedMainChannelsAtmeRouteRouteWithChildren,
 }
 
 const AuthedMainRouteRouteWithChildren = AuthedMainRouteRoute._addFileChildren(
