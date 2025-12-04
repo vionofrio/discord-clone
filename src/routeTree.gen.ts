@@ -16,8 +16,11 @@ import { Route as AuthedMainRouteRouteImport } from './routes/_authed/_main/rout
 import { Route as AuthRegisterIndexRouteImport } from './routes/_auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/_auth/login/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthedMainDiscoverRouteRouteImport } from './routes/_authed/_main/discover/route'
+import { Route as AuthedMainDiscoverIndexRouteImport } from './routes/_authed/_main/discover/index'
 import { Route as AuthedMainChannelsAtmeRouteRouteImport } from './routes/_authed/_main/channels/@me/route'
 import { Route as AuthedMainChannelsGuildIdRouteRouteImport } from './routes/_authed/_main/channels/$guildId/route'
+import { Route as AuthedMainDiscoverServersIndexRouteImport } from './routes/_authed/_main/discover/servers/index'
 import { Route as AuthedMainChannelsAtmeIndexRouteImport } from './routes/_authed/_main/channels/@me/index'
 import { Route as AuthedMainChannelsGuildIdIndexRouteImport } from './routes/_authed/_main/channels/$guildId/index'
 import { Route as AuthedMainChannelsAtmeDmIdIndexRouteImport } from './routes/_authed/_main/channels/@me/$dmId/index'
@@ -55,6 +58,16 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedMainDiscoverRouteRoute = AuthedMainDiscoverRouteRouteImport.update({
+  id: '/discover',
+  path: '/discover',
+  getParentRoute: () => AuthedMainRouteRoute,
+} as any)
+const AuthedMainDiscoverIndexRoute = AuthedMainDiscoverIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedMainDiscoverRouteRoute,
+} as any)
 const AuthedMainChannelsAtmeRouteRoute =
   AuthedMainChannelsAtmeRouteRouteImport.update({
     id: '/channels/@me',
@@ -66,6 +79,12 @@ const AuthedMainChannelsGuildIdRouteRoute =
     id: '/channels/$guildId',
     path: '/channels/$guildId',
     getParentRoute: () => AuthedMainRouteRoute,
+  } as any)
+const AuthedMainDiscoverServersIndexRoute =
+  AuthedMainDiscoverServersIndexRouteImport.update({
+    id: '/servers/',
+    path: '/servers/',
+    getParentRoute: () => AuthedMainDiscoverRouteRoute,
   } as any)
 const AuthedMainChannelsAtmeIndexRoute =
   AuthedMainChannelsAtmeIndexRouteImport.update({
@@ -94,13 +113,16 @@ const AuthedMainChannelsGuildIdChannelIdIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/discover': typeof AuthedMainDiscoverRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/login': typeof AuthLoginIndexRoute
   '/register': typeof AuthRegisterIndexRoute
   '/channels/$guildId': typeof AuthedMainChannelsGuildIdRouteRouteWithChildren
   '/channels/@me': typeof AuthedMainChannelsAtmeRouteRouteWithChildren
+  '/discover/': typeof AuthedMainDiscoverIndexRoute
   '/channels/$guildId/': typeof AuthedMainChannelsGuildIdIndexRoute
   '/channels/@me/': typeof AuthedMainChannelsAtmeIndexRoute
+  '/discover/servers': typeof AuthedMainDiscoverServersIndexRoute
   '/channels/$guildId/$channelId': typeof AuthedMainChannelsGuildIdChannelIdIndexRoute
   '/channels/@me/$dmId': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
@@ -109,8 +131,10 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/login': typeof AuthLoginIndexRoute
   '/register': typeof AuthRegisterIndexRoute
+  '/discover': typeof AuthedMainDiscoverIndexRoute
   '/channels/$guildId': typeof AuthedMainChannelsGuildIdIndexRoute
   '/channels/@me': typeof AuthedMainChannelsAtmeIndexRoute
+  '/discover/servers': typeof AuthedMainDiscoverServersIndexRoute
   '/channels/$guildId/$channelId': typeof AuthedMainChannelsGuildIdChannelIdIndexRoute
   '/channels/@me/$dmId': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
@@ -120,13 +144,16 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_authed': typeof AuthedRouteRouteWithChildren
   '/_authed/_main': typeof AuthedMainRouteRouteWithChildren
+  '/_authed/_main/discover': typeof AuthedMainDiscoverRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_auth/login/': typeof AuthLoginIndexRoute
   '/_auth/register/': typeof AuthRegisterIndexRoute
   '/_authed/_main/channels/$guildId': typeof AuthedMainChannelsGuildIdRouteRouteWithChildren
   '/_authed/_main/channels/@me': typeof AuthedMainChannelsAtmeRouteRouteWithChildren
+  '/_authed/_main/discover/': typeof AuthedMainDiscoverIndexRoute
   '/_authed/_main/channels/$guildId/': typeof AuthedMainChannelsGuildIdIndexRoute
   '/_authed/_main/channels/@me/': typeof AuthedMainChannelsAtmeIndexRoute
+  '/_authed/_main/discover/servers/': typeof AuthedMainDiscoverServersIndexRoute
   '/_authed/_main/channels/$guildId/$channelId/': typeof AuthedMainChannelsGuildIdChannelIdIndexRoute
   '/_authed/_main/channels/@me/$dmId/': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
@@ -134,13 +161,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/discover'
     | '/api/auth/$'
     | '/login'
     | '/register'
     | '/channels/$guildId'
     | '/channels/@me'
+    | '/discover/'
     | '/channels/$guildId/'
     | '/channels/@me/'
+    | '/discover/servers'
     | '/channels/$guildId/$channelId'
     | '/channels/@me/$dmId'
   fileRoutesByTo: FileRoutesByTo
@@ -149,8 +179,10 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/login'
     | '/register'
+    | '/discover'
     | '/channels/$guildId'
     | '/channels/@me'
+    | '/discover/servers'
     | '/channels/$guildId/$channelId'
     | '/channels/@me/$dmId'
   id:
@@ -159,13 +191,16 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_authed'
     | '/_authed/_main'
+    | '/_authed/_main/discover'
     | '/api/auth/$'
     | '/_auth/login/'
     | '/_auth/register/'
     | '/_authed/_main/channels/$guildId'
     | '/_authed/_main/channels/@me'
+    | '/_authed/_main/discover/'
     | '/_authed/_main/channels/$guildId/'
     | '/_authed/_main/channels/@me/'
+    | '/_authed/_main/discover/servers/'
     | '/_authed/_main/channels/$guildId/$channelId/'
     | '/_authed/_main/channels/@me/$dmId/'
   fileRoutesById: FileRoutesById
@@ -228,6 +263,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/_main/discover': {
+      id: '/_authed/_main/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof AuthedMainDiscoverRouteRouteImport
+      parentRoute: typeof AuthedMainRouteRoute
+    }
+    '/_authed/_main/discover/': {
+      id: '/_authed/_main/discover/'
+      path: '/'
+      fullPath: '/discover/'
+      preLoaderRoute: typeof AuthedMainDiscoverIndexRouteImport
+      parentRoute: typeof AuthedMainDiscoverRouteRoute
+    }
     '/_authed/_main/channels/@me': {
       id: '/_authed/_main/channels/@me'
       path: '/channels/@me'
@@ -241,6 +290,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/channels/$guildId'
       preLoaderRoute: typeof AuthedMainChannelsGuildIdRouteRouteImport
       parentRoute: typeof AuthedMainRouteRoute
+    }
+    '/_authed/_main/discover/servers/': {
+      id: '/_authed/_main/discover/servers/'
+      path: '/servers'
+      fullPath: '/discover/servers'
+      preLoaderRoute: typeof AuthedMainDiscoverServersIndexRouteImport
+      parentRoute: typeof AuthedMainDiscoverRouteRoute
     }
     '/_authed/_main/channels/@me/': {
       id: '/_authed/_main/channels/@me/'
@@ -287,6 +343,22 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface AuthedMainDiscoverRouteRouteChildren {
+  AuthedMainDiscoverIndexRoute: typeof AuthedMainDiscoverIndexRoute
+  AuthedMainDiscoverServersIndexRoute: typeof AuthedMainDiscoverServersIndexRoute
+}
+
+const AuthedMainDiscoverRouteRouteChildren: AuthedMainDiscoverRouteRouteChildren =
+  {
+    AuthedMainDiscoverIndexRoute: AuthedMainDiscoverIndexRoute,
+    AuthedMainDiscoverServersIndexRoute: AuthedMainDiscoverServersIndexRoute,
+  }
+
+const AuthedMainDiscoverRouteRouteWithChildren =
+  AuthedMainDiscoverRouteRoute._addFileChildren(
+    AuthedMainDiscoverRouteRouteChildren,
+  )
+
 interface AuthedMainChannelsGuildIdRouteRouteChildren {
   AuthedMainChannelsGuildIdIndexRoute: typeof AuthedMainChannelsGuildIdIndexRoute
   AuthedMainChannelsGuildIdChannelIdIndexRoute: typeof AuthedMainChannelsGuildIdChannelIdIndexRoute
@@ -321,11 +393,13 @@ const AuthedMainChannelsAtmeRouteRouteWithChildren =
   )
 
 interface AuthedMainRouteRouteChildren {
+  AuthedMainDiscoverRouteRoute: typeof AuthedMainDiscoverRouteRouteWithChildren
   AuthedMainChannelsGuildIdRouteRoute: typeof AuthedMainChannelsGuildIdRouteRouteWithChildren
   AuthedMainChannelsAtmeRouteRoute: typeof AuthedMainChannelsAtmeRouteRouteWithChildren
 }
 
 const AuthedMainRouteRouteChildren: AuthedMainRouteRouteChildren = {
+  AuthedMainDiscoverRouteRoute: AuthedMainDiscoverRouteRouteWithChildren,
   AuthedMainChannelsGuildIdRouteRoute:
     AuthedMainChannelsGuildIdRouteRouteWithChildren,
   AuthedMainChannelsAtmeRouteRoute:
