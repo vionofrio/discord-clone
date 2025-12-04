@@ -1,17 +1,90 @@
 @import "tailwindcss";
 @import "@fontsource-variable/public-sans";
 
-@theme inline {
+@theme {
   --font-sans: "Public Sans Variable", sans-serif;
+
+  --color-woodsmoke-50: oklch(0.959 0.003 286.8);
+  --color-woodsmoke-100: oklch(0.917 0.007 286.44);
+  --color-woodsmoke-200: oklch(0.833 0.014 286.17);
+  --color-woodsmoke-300: oklch(0.746 0.021 285.91);
+  --color-woodsmoke-400: oklch(0.657 0.029 285.59);
+  --color-woodsmoke-500: oklch(0.574 0.037 285.21);
+  --color-woodsmoke-600: oklch(0.49 0.033 285.12);
+  --color-woodsmoke-700: oklch(0.404 0.027 285.16);
+  --color-woodsmoke-800: oklch(0.314 0.02 285.24);
+  --color-woodsmoke-900: oklch(0.216 0.012 285.4);
+  --color-woodsmoke-950: oklch(0.165 0.006 285.73);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
 }
 
 @layer base {
+  :root {
+    --background: var(--color-woodsmoke-950);
+    --foreground: var(--color-woodsmoke-50);
+    --border: --alpha(var(--color-white) / 12%);
+    --surface-1: color-mix(
+      in oklch,
+      var(--color-woodsmoke-900) 70%,
+      var(--color-woodsmoke-950)
+    );
+    --surface-2: color-mix(
+      in oklch,
+      var(--color-woodsmoke-800) 60%,
+      var(--color-woodsmoke-950)
+    );
+    --surface-3: color-mix(
+      in oklch,
+      var(--color-woodsmoke-700) 45%,
+      var(--color-woodsmoke-950)
+    );
+  }
+
   body {
-    @apply font-sans antialiased;
+    @apply bg-background font-sans text-foreground antialiased;
   }
 
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .grid-areas-layout {
+    grid-template-areas:
+      "titleBar titleBar titleBar"
+      "guildsList notice notice"
+      "guildsList channelsList page";
+  }
+
+  .grid-cols-layout {
+    grid-template-columns: [start] auto [guildsEnd] auto [channelsEnd] 1fr [end];
+  }
+
+  .grid-rows-layout {
+    grid-template-rows: [top] auto [titleBarEnd] auto [noticeEnd] 1fr [end];
+  }
+
+  .channel-grid-areas-layout {
+    grid-template-areas:
+      "channelHeader channelHeader"
+      "channelMain channelSidebar";
+  }
+
+  .channel-grid-cols-layout {
+    grid-template-columns: 1fr auto;
+  }
+
+  .channel-grid-rows-layout {
+    grid-template-rows: auto 1fr;
   }
 }
