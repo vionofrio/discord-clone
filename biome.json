@@ -28,7 +28,7 @@
         "useSortedClasses": {
           "options": {
             "attributes": ["classList"],
-            "functions": ["clsx", "cva", "tw", "tw.*"]
+            "functions": ["clsx", "cva", "tw", "tw.*", "tv"]
           },
           "fix": "safe",
           "level": "info"

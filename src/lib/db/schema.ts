@@ -1,5 +1,21 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import {
+  boolean,
+  index,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { createSelectSchema } from "drizzle-zod";
+import type z from "zod";
 import { generateSnowflakeId } from "../snowflake";
+
+export const directMessageTypeEnum = pgEnum("direct_message_type", [
+  "ONE_ON_ONE",
+  "GROUP",
+]);
 
 export const user = pgTable("user", {
   id: text("id")
@@ -74,3 +90,74 @@ export const verification = pgTable("verification", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const directMessage = pgTable("direct_message", {
+  id: text("id")
+    .$default(() => generateSnowflakeId())
+    .primaryKey(),
+  ownerId: text("owner_id").references(() => user.id, {
+    onDelete: "set null",
+  }),
+  type: directMessageTypeEnum("type").default("ONE_ON_ONE").notNull(),
+  name: text("name"),
+  icon: text("icon"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
+export const directMessageParticipant = pgTable(
+  "dm_participant",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
+    directMessageId: text("dm_id")
+      .notNull()
+      .references(() => directMessage.id, {
+        onDelete: "cascade",
+      }),
+    isOpen: boolean("is_open").default(true).notNull(),
+    joinedAt: timestamp("joined_at").defaultNow().notNull(),
+    lastReadAt: timestamp("last_read_at"),
+  },
+  (t) => [
+    primaryKey({
+      columns: [t.userId, t.directMessageId],
+    }),
+    index("dm_participant_user_idx").on(t.userId),
+    index("dm_participant_dm_idx").on(t.directMessageId),
+  ],
+);
+
+export const directMessageRelations = relations(directMessage, ({ many }) => ({
+  participants: many(directMessageParticipant),
+}));
+
+export const directMessageParticipantRelations = relations(
+  directMessageParticipant,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [directMessageParticipant.userId],
+      references: [user.id],
+    }),
+    directMessage: one(directMessage, {
+      fields: [directMessageParticipant.directMessageId],
+      references: [directMessage.id],
+    }),
+  }),
+);
+
+export const directMessageSelectSchema = createSelectSchema(directMessage);
+export type DirectMessage = z.infer<typeof directMessageSelectSchema>;
+
+export const directMessageParticipantSelectSchema = createSelectSchema(
+  directMessageParticipant,
+);
+export type DirectMessageParticipant = z.infer<
+  typeof directMessageParticipantSelectSchema
+>;

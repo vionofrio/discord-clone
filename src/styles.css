@@ -21,6 +21,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
+  --color-muted: var(--muted);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
@@ -31,6 +32,7 @@
     --background: var(--color-woodsmoke-950);
     --foreground: var(--color-woodsmoke-50);
     --border: --alpha(var(--color-white) / 12%);
+    --muted: var(--color-woodsmoke-400);
     --surface-1: color-mix(
       in oklch,
       var(--color-woodsmoke-900) 70%,
