@@ -115,16 +115,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/discover': typeof AuthedMainDiscoverRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/login': typeof AuthLoginIndexRoute
-  '/register': typeof AuthRegisterIndexRoute
+  '/login/': typeof AuthLoginIndexRoute
+  '/register/': typeof AuthRegisterIndexRoute
   '/channels/$guildId': typeof AuthedMainChannelsGuildIdRouteRouteWithChildren
   '/channels/@me': typeof AuthedMainChannelsAtmeRouteRouteWithChildren
   '/discover/': typeof AuthedMainDiscoverIndexRoute
   '/channels/$guildId/': typeof AuthedMainChannelsGuildIdIndexRoute
   '/channels/@me/': typeof AuthedMainChannelsAtmeIndexRoute
-  '/discover/servers': typeof AuthedMainDiscoverServersIndexRoute
-  '/channels/$guildId/$channelId': typeof AuthedMainChannelsGuildIdChannelIdIndexRoute
-  '/channels/@me/$dmId': typeof AuthedMainChannelsAtmeDmIdIndexRoute
+  '/discover/servers/': typeof AuthedMainDiscoverServersIndexRoute
+  '/channels/$guildId/$channelId/': typeof AuthedMainChannelsGuildIdChannelIdIndexRoute
+  '/channels/@me/$dmId/': typeof AuthedMainChannelsAtmeDmIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -163,16 +163,16 @@ export interface FileRouteTypes {
     | '/'
     | '/discover'
     | '/api/auth/$'
-    | '/login'
-    | '/register'
+    | '/login/'
+    | '/register/'
     | '/channels/$guildId'
     | '/channels/@me'
     | '/discover/'
     | '/channels/$guildId/'
     | '/channels/@me/'
-    | '/discover/servers'
-    | '/channels/$guildId/$channelId'
-    | '/channels/@me/$dmId'
+    | '/discover/servers/'
+    | '/channels/$guildId/$channelId/'
+    | '/channels/@me/$dmId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -217,14 +217,14 @@ declare module '@tanstack/react-router' {
     '/_authed': {
       id: '/_authed'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -238,21 +238,21 @@ declare module '@tanstack/react-router' {
     '/_authed/_main': {
       id: '/_authed/_main'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthedMainRouteRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
     '/_auth/register/': {
       id: '/_auth/register/'
       path: '/register'
-      fullPath: '/register'
+      fullPath: '/register/'
       preLoaderRoute: typeof AuthRegisterIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/_auth/login/': {
       id: '/_auth/login/'
       path: '/login'
-      fullPath: '/login'
+      fullPath: '/login/'
       preLoaderRoute: typeof AuthLoginIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
@@ -294,7 +294,7 @@ declare module '@tanstack/react-router' {
     '/_authed/_main/discover/servers/': {
       id: '/_authed/_main/discover/servers/'
       path: '/servers'
-      fullPath: '/discover/servers'
+      fullPath: '/discover/servers/'
       preLoaderRoute: typeof AuthedMainDiscoverServersIndexRouteImport
       parentRoute: typeof AuthedMainDiscoverRouteRoute
     }
@@ -315,14 +315,14 @@ declare module '@tanstack/react-router' {
     '/_authed/_main/channels/@me/$dmId/': {
       id: '/_authed/_main/channels/@me/$dmId/'
       path: '/$dmId'
-      fullPath: '/channels/@me/$dmId'
+      fullPath: '/channels/@me/$dmId/'
       preLoaderRoute: typeof AuthedMainChannelsAtmeDmIdIndexRouteImport
       parentRoute: typeof AuthedMainChannelsAtmeRouteRoute
     }
     '/_authed/_main/channels/$guildId/$channelId/': {
       id: '/_authed/_main/channels/$guildId/$channelId/'
       path: '/$channelId'
-      fullPath: '/channels/$guildId/$channelId'
+      fullPath: '/channels/$guildId/$channelId/'
       preLoaderRoute: typeof AuthedMainChannelsGuildIdChannelIdIndexRouteImport
       parentRoute: typeof AuthedMainChannelsGuildIdRouteRoute
     }

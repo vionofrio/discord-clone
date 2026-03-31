@@ -14,7 +14,7 @@ export const GuildList = () => {
           >
             <LogoIcon className="size-6 text-primary-foreground" />
           </Link>
-          <div className="-z-10 -translate-x-full peer-hover:-translate-x-1/2 peer-[.active]:-translate-x-1/2 absolute left-0 w-2 rounded-full bg-primary-foreground transition-[height,translate] peer-hover:h-1/2 peer-[.active]:h-full" />
+          <div className="absolute left-0 -z-10 w-2 -translate-x-full rounded-full bg-primary-foreground transition-[height,translate] peer-hover:h-1/2 peer-hover:-translate-x-1/2 peer-[.active]:h-full peer-[.active]:-translate-x-1/2" />
         </li>
         <li className="flex items-center justify-center">
           <div className="h-px w-8 bg-divider" />
@@ -31,7 +31,7 @@ export const GuildList = () => {
           >
             <DiscoverIcon className="size-5 text-primary-foreground" />
           </Link>
-          <div className="-z-10 -translate-x-full peer-hover:-translate-x-1/2 peer-[.active]:-translate-x-1/2 absolute left-0 w-2 rounded-full bg-primary-foreground transition-[height,translate] peer-hover:h-1/2 peer-[.active]:h-full" />
+          <div className="absolute left-0 -z-10 w-2 -translate-x-full rounded-full bg-primary-foreground transition-[height,translate] peer-hover:h-1/2 peer-hover:-translate-x-1/2 peer-[.active]:h-full peer-[.active]:-translate-x-1/2" />
         </li>
       </ul>
     </div>
